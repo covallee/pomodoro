@@ -1,6 +1,11 @@
 {
   "name": "pomodoro",
   "version": "0.1.0",
+  "author": {
+    "name" : "Constant Vallee",
+    "url": "https://constantvallee.dev"
+  },
+  "homepage": ".",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
