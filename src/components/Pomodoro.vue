@@ -2,7 +2,7 @@
   <div>
     <div class="type">{{ type }}</div>
     <div class="counter">{{ time }}</div>
-    <button @click="startCounter">Start</button>
+    <button @click="startCounter">{{ isPlaying ? "Pause" : "Start" }}</button>
     <button @click="reset">Reset</button>
     <div>Total of Pomodoro today: {{ numberOfPomodoro }}</div>
   </div>
@@ -12,11 +12,13 @@
 export default {
   data() {
     return {
-      counter: 25*60,
+      // counter: this.pomodoroTime,
+      counter: 10,
       interval: null,
-      isPaused: false,
+      isPlaying: false,
       time: "",
       type: "pomodoro",
+      pomodoroTime: 25 * 60,
     };
   },
   mounted() {
@@ -29,10 +31,11 @@ export default {
   },
   methods: {
     startCounter() {
-      if (this.isPaused) {
-        this.stopCounter();
-      } else {
+      this.isPlaying = !this.isPlaying;
+      if (this.isPlaying) {
         this.interval = setInterval(this.updateCounter, 1000);
+      } else {
+        this.stopCounter();
       }
     },
     updateCounter() {
@@ -41,7 +44,7 @@ export default {
       if (this.counter == 0) {
         this.stopCounter();
         this.playSound();
-        this.isPaused = true;
+        this.isPlaying = false;
         if (this.type === "pomodoro") {
           this.$store.commit("increment");
           if (this.$store.state.totalToday % 4 === 0) {
@@ -61,7 +64,10 @@ export default {
       clearInterval(this.interval);
     },
     reset() {
-      this.counter = 60;
+      this.stopCounter();
+      this.counter = this.pomodoroTime;
+      this.updateTimeString();
+      this.isPlaying = false;
     },
     updateTimeString() {
       let minutes = Math.floor(this.counter / 60);
@@ -70,9 +76,9 @@ export default {
       this.time = minutes + ":" + seconds;
     },
     playSound() {
-      const audio = new Audio(require('@/assets/ding.mp3'));
+      const audio = new Audio(require("@/assets/ding.mp3"));
       audio.play();
-    }
+    },
   },
 };
 </script>
