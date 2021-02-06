@@ -8,14 +8,21 @@ import Pomodoro from "./components/Pomodoro.vue";
 export default {
   name: "App",
   components: {
-    Pomodoro
-  }
+    Pomodoro,
+  },
 };
 </script>
 
 <style lang="scss">
+:root {
+  --background: #16161a;
+  --headline: #fffffe;
+  --button: #7f5af0;
+  --tertiary: #2cb67d;
+}
+
 body {
-  background-color: #16161a;
+  background-color: var(--background);
 }
 
 #app {
@@ -23,7 +30,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #fffffe;
+  color: var(--headline);
   margin-top: 60px;
 }
 </style>

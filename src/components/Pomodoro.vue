@@ -91,10 +91,11 @@ export default {
 .type {
   text-transform: uppercase;
   font-weight: 700;
+  color: var(--tertiary);
 }
 button {
   padding: 16px 40px;
-  background-color: #7f5af0;
+  background-color: var(--button);
   border: none;
   color: #fffffe;
   font-size: 24px;
