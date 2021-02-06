@@ -12,8 +12,7 @@
 export default {
   data() {
     return {
-      // counter: this.pomodoroTime,
-      counter: 10,
+      counter: null,
       interval: null,
       isPlaying: false,
       time: "",
@@ -22,6 +21,7 @@ export default {
     };
   },
   mounted() {
+    this.counter = this.pomodoroTime;
     this.updateTimeString();
   },
   computed: {
@@ -85,7 +85,7 @@ export default {
 
 <style lang="scss">
 .counter {
-  font-size: 120px;
+  font-size: 140px;
   padding: 16px;
 }
 .type {
@@ -101,5 +101,7 @@ button {
   border-radius: 5px;
   margin: 16px;
   cursor: pointer;
+  font-weight: 400;
+  letter-spacing: 0.04em;
 }
 </style>
