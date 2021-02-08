@@ -54,10 +54,11 @@ export default {
             this.type = "Short Break";
             this.counter = 5 * 60;
           }
-          this.updateTimeString();
         } else {
           this.type = "pomodoro";
+          this.counter = this.pomodoroTime;
         }
+        this.updateTimeString();
       }
     },
     stopCounter() {
