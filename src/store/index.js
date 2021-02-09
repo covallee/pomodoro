@@ -5,7 +5,7 @@ export default createStore({
     totalToday: 0,
   },
   mutations: {
-    increment(state) {
+    INCREMENT_TOTAL(state) {
       state.totalToday++;
     },
   },

@@ -46,7 +46,7 @@ export default {
         this.playSound();
         this.isPlaying = false;
         if (this.type === "pomodoro") {
-          this.$store.commit("increment");
+          this.$store.commit("INCREMENT_TOTAL");
           if (this.$store.state.totalToday % 4 === 0) {
             this.type = "Long Break";
             this.counter = 15 * 60;
