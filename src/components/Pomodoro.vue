@@ -23,105 +23,107 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { usePomodoroStore } from '@/stores/pomodoro'
-import Listing from './Listing.vue'
-import dingSound from '@/assets/ding.mp3'
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { usePomodoroStore } from "@/stores/pomodoro";
+import Listing from "./Listing.vue";
+import dingSound from "@/assets/ding.mp3";
 
-const store = usePomodoroStore()
+const store = usePomodoroStore();
 
-const POMODORO_TIME = 25 * 60
-const SHORT_BREAK = 5 * 60
-const LONG_BREAK = 15 * 60
+const POMODORO_TIME = 25 * 60;
+const SHORT_BREAK = 5 * 60;
+const LONG_BREAK = 15 * 60;
 
-const counter = ref(POMODORO_TIME)
-const interval = ref(null)
-const isPlaying = ref(false)
-const type = ref('pomodoro')
-const positionToggle = ref(false)
-const startTime = ref('')
+const counter = ref(POMODORO_TIME);
+const interval = ref(null);
+const isPlaying = ref(false);
+const type = ref("pomodoro");
+const positionToggle = ref(false);
+const startTime = ref("");
 
-const positionStatus = computed(() => positionToggle.value ? 'standing' : 'sitting')
+const positionStatus = computed(() =>
+  positionToggle.value ? "standing" : "sitting",
+);
 
 const time = computed(() => {
-  const minutes = Math.floor(counter.value / 60)
-  let seconds = counter.value % 60
-  seconds = seconds < 10 ? '0' + seconds : seconds
-  return `${minutes}:${seconds}`
-})
+  const minutes = Math.floor(counter.value / 60);
+  let seconds = counter.value % 60;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+  return `${minutes}:${seconds}`;
+});
 
 function startCounter() {
-  isPlaying.value = !isPlaying.value
+  isPlaying.value = !isPlaying.value;
   if (isPlaying.value) {
-    setTime()
-    interval.value = setInterval(updateCounter, 1000)
+    setTime();
+    interval.value = setInterval(updateCounter, 1000);
   } else {
-    stopCounter()
+    stopCounter();
   }
 }
 
 function updateCounter() {
-  counter.value--
+  counter.value--;
   if (counter.value === 0) {
-    stopCounter()
-    playSound()
-    isPlaying.value = false
-    updateStore()
-    
-    if (type.value === 'pomodoro') {
+    stopCounter();
+    playSound();
+    isPlaying.value = false;
+    updateStore();
+
+    if (type.value === "pomodoro") {
       if (store.totalToday % 4 === 0) {
-        type.value = 'Long Break'
-        counter.value = LONG_BREAK
+        type.value = "Long Break";
+        counter.value = LONG_BREAK;
       } else {
-        type.value = 'Short Break'
-        counter.value = SHORT_BREAK
+        type.value = "Short Break";
+        counter.value = SHORT_BREAK;
       }
     } else {
-      type.value = 'pomodoro'
-      counter.value = POMODORO_TIME
+      type.value = "pomodoro";
+      counter.value = POMODORO_TIME;
     }
   }
 }
 
 function stopCounter() {
   if (interval.value) {
-    clearInterval(interval.value)
-    interval.value = null
+    clearInterval(interval.value);
+    interval.value = null;
   }
 }
 
 function reset() {
-  stopCounter()
-  counter.value = POMODORO_TIME
-  isPlaying.value = false
-  type.value = 'pomodoro'
+  stopCounter();
+  counter.value = POMODORO_TIME;
+  isPlaying.value = false;
+  type.value = "pomodoro";
 }
 
 function playSound() {
-  const audio = new Audio(dingSound)
-  audio.play()
+  const audio = new Audio(dingSound);
+  audio.play();
 }
 
 function updateStore() {
   store.addPomodoro({
     startTime: startTime.value,
     type: type.value,
-    position: positionStatus.value
-  })
+    position: positionStatus.value,
+  });
 }
 
 function setTime() {
-  const now = new Date()
-  startTime.value = now.toLocaleTimeString()
+  const now = new Date();
+  startTime.value = now.toLocaleTimeString();
 }
 
 onMounted(() => {
   // Timer is already set via ref initial value
-})
+});
 
 onUnmounted(() => {
-  stopCounter()
-})
+  stopCounter();
+});
 </script>
 
 <style lang="scss" scoped>

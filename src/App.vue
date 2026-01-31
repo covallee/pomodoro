@@ -1,5 +1,5 @@
 <script setup>
-import Pomodoro from './components/Pomodoro.vue'
+import Pomodoro from "./components/Pomodoro.vue";
 </script>
 
 <template>

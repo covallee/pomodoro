@@ -1,28 +1,28 @@
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 
-export const usePomodoroStore = defineStore('pomodoro', () => {
+export const usePomodoroStore = defineStore("pomodoro", () => {
   // State
-  const pomodoros = ref([])
+  const pomodoros = ref([]);
 
   // Getters
   const totalToday = computed(() => {
-    return pomodoros.value.filter(p => p.type === 'pomodoro').length
-  })
+    return pomodoros.value.filter((p) => p.type === "pomodoro").length;
+  });
 
   // Actions
   function addPomodoro(record) {
-    pomodoros.value.push(record)
+    pomodoros.value.push(record);
   }
 
   function reset() {
-    pomodoros.value = []
+    pomodoros.value = [];
   }
 
   return {
     pomodoros,
     totalToday,
     addPomodoro,
-    reset
-  }
-})
+    reset,
+  };
+});

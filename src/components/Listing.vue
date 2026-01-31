@@ -9,12 +9,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { usePomodoroStore } from '@/stores/pomodoro'
+import { computed } from "vue";
+import { usePomodoroStore } from "@/stores/pomodoro";
 
-const store = usePomodoroStore()
+const store = usePomodoroStore();
 
-const listOfPomodoro = computed(() => store.pomodoros)
+const listOfPomodoro = computed(() => store.pomodoros);
 </script>
 
 <style lang="scss" scoped>

@@ -1,15 +1,15 @@
-import { fileURLToPath } from 'node:url'
-import { mergeConfig, defineConfig } from 'vite'
-import { configDefaults } from 'vitest/config'
-import viteConfig from './vite.config'
+import { fileURLToPath } from "node:url";
+import { mergeConfig, defineConfig } from "vite";
+import { configDefaults } from "vitest/config";
+import viteConfig from "./vite.config";
 
 export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      environment: 'happy-dom',
-      exclude: [...configDefaults.exclude, 'cypress/**'],
-      root: fileURLToPath(new URL('./', import.meta.url))
-    }
-  })
-)
+      environment: "happy-dom",
+      exclude: [...configDefaults.exclude, "cypress/**"],
+      root: fileURLToPath(new URL("./", import.meta.url)),
+    },
+  }),
+);
