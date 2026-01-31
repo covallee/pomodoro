@@ -17,107 +17,111 @@
       </div>
       <span>standing</span>
     </div>
-    <div>Total of Pomodoro today: {{ numberOfPomodoro }}</div>
+    <div>Total of Pomodoro today: {{ store.totalToday }}</div>
     <Listing />
   </div>
 </template>
 
-<script>
-import Listing from "./Listing";
+<script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { usePomodoroStore } from '@/stores/pomodoro'
+import Listing from './Listing.vue'
+import dingSound from '@/assets/ding.mp3'
 
-export default {
-  components: {
-    Listing,
-  },
-  data() {
-    return {
-      counter: null,
-      interval: null,
-      isPlaying: false,
-      time: "",
-      type: "pomodoro",
-      pomodoroTime: 25 * 60,
-      positionToggle: false,
-      startTime: "",
-    };
-  },
-  mounted() {
-    this.counter = this.pomodoroTime;
-    this.updateTimeString();
-  },
-  computed: {
-    numberOfPomodoro() {
-      return this.$store.state.totalToday;
-    },
-    positionStatus() {
-      return this.positionToggle ? "standing" : "sitting";
-    },
-  },
-  methods: {
-    startCounter() {
-      this.isPlaying = !this.isPlaying;
-      if (this.isPlaying) {
-        this.setTime();
-        this.interval = setInterval(this.updateCounter, 1000);
+const store = usePomodoroStore()
+
+const POMODORO_TIME = 25 * 60
+const SHORT_BREAK = 5 * 60
+const LONG_BREAK = 15 * 60
+
+const counter = ref(POMODORO_TIME)
+const interval = ref(null)
+const isPlaying = ref(false)
+const type = ref('pomodoro')
+const positionToggle = ref(false)
+const startTime = ref('')
+
+const positionStatus = computed(() => positionToggle.value ? 'standing' : 'sitting')
+
+const time = computed(() => {
+  const minutes = Math.floor(counter.value / 60)
+  let seconds = counter.value % 60
+  seconds = seconds < 10 ? '0' + seconds : seconds
+  return `${minutes}:${seconds}`
+})
+
+function startCounter() {
+  isPlaying.value = !isPlaying.value
+  if (isPlaying.value) {
+    setTime()
+    interval.value = setInterval(updateCounter, 1000)
+  } else {
+    stopCounter()
+  }
+}
+
+function updateCounter() {
+  counter.value--
+  if (counter.value === 0) {
+    stopCounter()
+    playSound()
+    isPlaying.value = false
+    updateStore()
+    
+    if (type.value === 'pomodoro') {
+      if (store.totalToday % 4 === 0) {
+        type.value = 'Long Break'
+        counter.value = LONG_BREAK
       } else {
-        this.stopCounter();
+        type.value = 'Short Break'
+        counter.value = SHORT_BREAK
       }
-    },
-    updateCounter() {
-      this.counter--;
-      this.updateTimeString();
-      if (this.counter == 0) {
-        this.stopCounter();
-        this.playSound();
-        this.isPlaying = false;
-        this.updateStore();
-        if (this.type === "pomodoro") {
-          if (this.$store.state.totalToday % 4 === 0) {
-            this.type = "Long Break";
-            this.counter = 15 * 60;
-          } else {
-            this.type = "Short Break";
-            this.counter = 5 * 60;
-          }
-        } else {
-          this.type = "pomodoro";
-          this.counter = this.pomodoroTime;
-        }
-        this.updateTimeString();
-      }
-    },
-    stopCounter() {
-      clearInterval(this.interval);
-    },
-    reset() {
-      this.stopCounter();
-      this.counter = this.pomodoroTime;
-      this.updateTimeString();
-      this.isPlaying = false;
-    },
-    updateTimeString() {
-      let minutes = Math.floor(this.counter / 60);
-      let seconds = this.counter % 60;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
-      this.time = minutes + ":" + seconds;
-    },
-    playSound() {
-      const audio = new Audio(require("@/assets/ding.mp3"));
-      audio.play();
-    },
-    updateStore() {
-      this.$store.dispatch("updateRecords", {
-        startTime: this.startTime,
-        type: this.type,
-        position: this.positionStatus,
-      });
-    },
-    setTime() {
-      this.startTime = new Date();
-      this.startTime = this.startTime.toLocaleTimeString();
-    },
-  },
-};
+    } else {
+      type.value = 'pomodoro'
+      counter.value = POMODORO_TIME
+    }
+  }
+}
+
+function stopCounter() {
+  if (interval.value) {
+    clearInterval(interval.value)
+    interval.value = null
+  }
+}
+
+function reset() {
+  stopCounter()
+  counter.value = POMODORO_TIME
+  isPlaying.value = false
+  type.value = 'pomodoro'
+}
+
+function playSound() {
+  const audio = new Audio(dingSound)
+  audio.play()
+}
+
+function updateStore() {
+  store.addPomodoro({
+    startTime: startTime.value,
+    type: type.value,
+    position: positionStatus.value
+  })
+}
+
+function setTime() {
+  const now = new Date()
+  startTime.value = now.toLocaleTimeString()
+}
+
+onMounted(() => {
+  // Timer is already set via ref initial value
+})
+
+onUnmounted(() => {
+  stopCounter()
+})
 </script>
 
 <style lang="scss" scoped>

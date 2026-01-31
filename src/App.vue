@@ -1,17 +1,10 @@
+<script setup>
+import Pomodoro from './components/Pomodoro.vue'
+</script>
+
 <template>
   <Pomodoro />
 </template>
-
-<script>
-import Pomodoro from "./components/Pomodoro.vue";
-
-export default {
-  name: "App",
-  components: {
-    Pomodoro,
-  },
-};
-</script>
 
 <style lang="scss">
 :root {
@@ -21,12 +14,14 @@ export default {
   --tertiary: #2cb67d;
 }
 
-body {
-  background-color: var(--background);
-}
-
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--background);
 }
 
 #app {

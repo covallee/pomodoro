@@ -8,14 +8,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    listOfPomodoro() {
-      return this.$store.state.pomodoros;
-    },
-  },
-};
+<script setup>
+import { computed } from 'vue'
+import { usePomodoroStore } from '@/stores/pomodoro'
+
+const store = usePomodoroStore()
+
+const listOfPomodoro = computed(() => store.pomodoros)
 </script>
 
 <style lang="scss" scoped>

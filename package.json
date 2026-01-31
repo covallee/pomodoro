@@ -1,44 +1,30 @@
 {
   "name": "pomodoro",
-  "version": "0.1.0",
-  "author": {
-    "name" : "Constant Vallee",
-    "url": "https://constantvallee.dev"
-  },
-  "homepage": ".",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:e2e": "cypress open",
+    "test:e2e:ci": "cypress run",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "register-service-worker": "^1.7.1",
-    "vue": "^3.0.0",
-    "vuex": "^4.0.0-0"
+    "pinia": "^3.0.4",
+    "vite-plugin-pwa": "^1.2.0",
+    "vue": "^3.5.24",
+    "workbox-window": "^7.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-e2e-cypress": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-pwa": "~4.5.0",
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/test-utils": "^2.0.0-0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-vue": "^7.0.0-0",
-    "prettier": "^1.19.1",
-    "sass": "^1.26.5",
-    "sass-loader": "^8.0.2",
-    "typescript": "~3.9.3",
-    "vue-jest": "^5.0.0-0"
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/test-utils": "^2.4.6",
+    "cypress": "^14.5.4",
+    "happy-dom": "^20.4.0",
+    "sass": "^1.97.3",
+    "vite": "^7.2.4",
+    "vitest": "^3.2.4"
   }
 }
